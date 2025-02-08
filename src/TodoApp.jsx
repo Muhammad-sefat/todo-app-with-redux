@@ -90,7 +90,7 @@ const TodoApp = () => {
       </div>
 
       {/* Input & Add Button */}
-      <div className="flex flex-col md:flex-row w-full md:w-3/4 space-y-2 md:space-y-0 md:space-x-2 mb-4">
+      <div className="flex flex-col md:flex-row w-full md:w-1/2 space-y-2 md:space-y-0 md:space-x-2 mb-4">
         <input
           type="text"
           value={text}
