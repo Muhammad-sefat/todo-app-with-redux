@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   todos: [],
+  filter: "all",
 };
 
 export const todoSlice = createSlice({

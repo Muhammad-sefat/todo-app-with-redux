@@ -34,7 +34,7 @@ const TodoApp = () => {
           type="text"
           value={text}
           onChange={(e) => setText(e.target.value)}
-          className="p-2 text-black rounded"
+          className="p-2 w-full text-black rounded"
           placeholder="Add a todo..."
         />
         <button
@@ -46,7 +46,7 @@ const TodoApp = () => {
       </div>
 
       <ul className="w-1/2">
-        {todos.map((todo) => (
+        {todos.map((todo, index) => (
           <li
             key={todo.id}
             className="flex justify-between items-center bg-gray-800 p-2 rounded mb-2"
@@ -59,7 +59,9 @@ const TodoApp = () => {
                 className="text-black p-1 rounded"
               />
             ) : (
-              <span>{todo.text}</span>
+              <span>
+                {index + 1}) {todo.text}
+              </span>
             )}
 
             <div className="flex space-x-2">
