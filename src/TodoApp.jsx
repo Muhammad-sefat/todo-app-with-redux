@@ -76,7 +76,7 @@ const TodoApp = () => {
       {/* Heading & Filter Dropdown */}
       <div className="flex flex-col md:flex-row justify-center items-center w-full md:w-3/4 gap-4 md:gap-6 my-6">
         <h1 className="text-2xl md:text-4xl font-bold text-center">
-          Redux Todo App
+          My Todo App
         </h1>
         <select
           className="p-2 rounded bg-gray-800 text-white"
