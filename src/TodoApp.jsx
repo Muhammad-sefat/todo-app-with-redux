@@ -62,21 +62,22 @@ const TodoApp = () => {
   });
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-gray-900 text-white">
-      <div className="flex flex-col items-center justify-center mb-6">
-        {/* Clock */}
-        <div className="bg-gradient-to-r from-purple-400 to-blue-400 text-white text-4xl font-bold px-6 py-3 rounded-xl shadow-lg tracking-wider animate-pulse">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white p-4">
+      {/* Clock & Date */}
+      <div className="flex flex-col items-center justify-center mb-6 w-full">
+        <div className="bg-gradient-to-r from-purple-400 to-blue-400 text-white text-3xl md:text-4xl font-bold px-6 py-3 rounded-xl shadow-lg tracking-wider animate-pulse">
           {formattedTime}
         </div>
-
-        {/* Date */}
-        <p className="mt-2 text-lg font-medium text-gray-300 bg-gray-800 px-4 py-2 rounded-lg shadow-md">
+        <p className="mt-2 text-base md:text-lg font-medium text-gray-300 bg-gray-800 px-4 py-2 rounded-lg shadow-md">
           {formattedDate}
         </p>
       </div>
 
-      <div className="flex justify-center items-center w-1/2 gap-6 my-8">
-        <h1 className="text-4xl font-bold">Redux Todo App</h1>
+      {/* Heading & Filter Dropdown */}
+      <div className="flex flex-col md:flex-row justify-center items-center w-full md:w-3/4 gap-4 md:gap-6 my-6">
+        <h1 className="text-2xl md:text-4xl font-bold text-center">
+          Redux Todo App
+        </h1>
         <select
           className="p-2 rounded bg-gray-800 text-white"
           onChange={(e) => dispatch(setFilter(e.target.value))}
@@ -88,7 +89,8 @@ const TodoApp = () => {
         </select>
       </div>
 
-      <div className="flex space-x-2 mb-4">
+      {/* Input & Add Button */}
+      <div className="flex flex-col md:flex-row w-full md:w-3/4 space-y-2 md:space-y-0 md:space-x-2 mb-4">
         <input
           type="text"
           value={text}
@@ -97,7 +99,7 @@ const TodoApp = () => {
           placeholder="Add a todo..."
         />
         <button
-          className="bg-green-500 px-4 py-2 rounded"
+          className="bg-green-500 px-4 py-2 rounded w-full md:w-auto"
           onClick={handleAddTodo}
         >
           Add
@@ -105,19 +107,19 @@ const TodoApp = () => {
       </div>
 
       {/* Todo List */}
-      <ul className="w-1/2">
+      <ul className="w-full md:w-3/4">
         {filteredTodos.map((todo, index) => (
           <li
             key={todo.id}
-            className="flex justify-between items-center bg-gray-800 p-2 rounded mb-2"
+            className="flex flex-col md:flex-row justify-between items-center bg-gray-800 p-2 rounded mb-2"
           >
-            {/* Show Order Number & Editable Text */}
+            {/* Editable Text */}
             {editId === todo.id ? (
               <input
                 type="text"
                 value={newText}
                 onChange={(e) => setNewText(e.target.value)}
-                className="p-1 text-black rounded w-2/3"
+                className="p-1 text-black rounded w-full md:w-2/3 mb-2 md:mb-0"
               />
             ) : (
               <span
@@ -129,8 +131,8 @@ const TodoApp = () => {
               </span>
             )}
 
+            {/* Buttons */}
             <div className="flex space-x-2">
-              {/* Toggle Pending/Completed */}
               <button
                 className={`px-3 py-1 rounded ${
                   todo.completed ? "bg-green-500" : "bg-yellow-500"
@@ -139,8 +141,6 @@ const TodoApp = () => {
               >
                 {todo.completed ? "Completed" : "Pending"}
               </button>
-
-              {/* Edit & Save Button */}
               {editId === todo.id ? (
                 <button
                   className="bg-blue-500 px-3 py-1 rounded"
@@ -159,8 +159,6 @@ const TodoApp = () => {
                   Edit
                 </button>
               )}
-
-              {/* Delete Button */}
               <button
                 className="bg-red-500 px-3 py-1 rounded"
                 onClick={() => dispatch(deleteTodo(todo.id))}
