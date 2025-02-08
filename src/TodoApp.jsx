@@ -1,14 +1,28 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { addTodo, deleteTodo, updateTodo } from "./redux/todoSlice";
+import {
+  addTodo,
+  deleteTodo,
+  updateTodo,
+  setFilter,
+  toggleTodo,
+} from "./redux/todoSlice";
 
 const TodoApp = () => {
   const [text, setText] = useState("");
   const [editId, setEditId] = useState(null);
   const [newText, setNewText] = useState("");
+  const [time, setTime] = useState(new Date());
 
   const todos = useSelector((state) => state.todos.todos);
+  const filter = useSelector((state) => state.todos.filter);
   const dispatch = useDispatch();
+
+  const filteredTodos = todos.filter((todo) => {
+    if (filter === "completed") return todo.completed;
+    if (filter === "pending") return !todo.completed;
+    return true;
+  });
 
   const handleAddTodo = () => {
     if (text.trim()) {
@@ -25,9 +39,54 @@ const TodoApp = () => {
     }
   };
 
+  // Update time every second
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTime(new Date());
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Format Date & Time
+  const formattedTime = time.toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: true,
+  });
+  const formattedDate = time.toLocaleDateString([], {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  });
+
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-gray-900 text-white">
-      <h1 className="text-4xl font-bold my-6">Redux Todo App</h1>
+      <div className="flex flex-col items-center justify-center mb-6">
+        {/* Clock */}
+        <div className="bg-gradient-to-r from-purple-400 to-blue-400 text-white text-4xl font-bold px-6 py-3 rounded-xl shadow-lg tracking-wider animate-pulse">
+          {formattedTime}
+        </div>
+
+        {/* Date */}
+        <p className="mt-2 text-lg font-medium text-gray-300 bg-gray-800 px-4 py-2 rounded-lg shadow-md">
+          {formattedDate}
+        </p>
+      </div>
+
+      <div className="flex justify-center items-center w-1/2 gap-6 my-8">
+        <h1 className="text-4xl font-bold">Redux Todo App</h1>
+        <select
+          className="p-2 rounded bg-gray-800 text-white"
+          onChange={(e) => dispatch(setFilter(e.target.value))}
+          value={filter}
+        >
+          <option value="all">All</option>
+          <option value="pending">Pending</option>
+          <option value="completed">Completed</option>
+        </select>
+      </div>
 
       <div className="flex space-x-2 mb-4">
         <input
@@ -45,26 +104,43 @@ const TodoApp = () => {
         </button>
       </div>
 
+      {/* Todo List */}
       <ul className="w-1/2">
-        {todos.map((todo, index) => (
+        {filteredTodos.map((todo, index) => (
           <li
             key={todo.id}
             className="flex justify-between items-center bg-gray-800 p-2 rounded mb-2"
           >
+            {/* Show Order Number & Editable Text */}
             {editId === todo.id ? (
               <input
                 type="text"
                 value={newText}
                 onChange={(e) => setNewText(e.target.value)}
-                className="text-black p-1 rounded"
+                className="p-1 text-black rounded w-2/3"
               />
             ) : (
-              <span>
-                {index + 1}) {todo.text}
+              <span
+                className={
+                  todo.completed ? "line-through text-gray-400" : "text-lg"
+                }
+              >
+                {index + 1}. {todo.text}
               </span>
             )}
 
             <div className="flex space-x-2">
+              {/* Toggle Pending/Completed */}
+              <button
+                className={`px-3 py-1 rounded ${
+                  todo.completed ? "bg-green-500" : "bg-yellow-500"
+                }`}
+                onClick={() => dispatch(toggleTodo(todo.id))}
+              >
+                {todo.completed ? "Completed" : "Pending"}
+              </button>
+
+              {/* Edit & Save Button */}
               {editId === todo.id ? (
                 <button
                   className="bg-blue-500 px-3 py-1 rounded"
@@ -74,7 +150,7 @@ const TodoApp = () => {
                 </button>
               ) : (
                 <button
-                  className="bg-yellow-500 px-3 py-1 rounded"
+                  className="bg-blue-500 px-3 py-1 rounded"
                   onClick={() => {
                     setEditId(todo.id);
                     setNewText(todo.text);
@@ -84,6 +160,7 @@ const TodoApp = () => {
                 </button>
               )}
 
+              {/* Delete Button */}
               <button
                 className="bg-red-500 px-3 py-1 rounded"
                 onClick={() => dispatch(deleteTodo(todo.id))}
