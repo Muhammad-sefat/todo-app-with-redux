@@ -64,7 +64,7 @@ const TodoApp = () => {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white p-4">
       {/* Clock & Date */}
-      <div className="flex flex-col items-center justify-center mb-6 w-full">
+      <div className="flex flex-col items-center justify-center mb-1 w-full">
         <div className="bg-gradient-to-r from-purple-400 to-blue-400 text-white text-3xl md:text-4xl font-bold px-6 py-3 rounded-xl shadow-lg tracking-wider animate-pulse">
           {formattedTime}
         </div>
@@ -75,7 +75,7 @@ const TodoApp = () => {
 
       {/* Heading & Filter Dropdown */}
       <div className="flex flex-col md:flex-row justify-center items-center w-full md:w-3/4 gap-4 md:gap-6 my-6">
-        <h1 className="text-2xl md:text-4xl font-bold text-center">
+        <h1 className="text-2xl md:text-4xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent text-center">
           My Todo App
         </h1>
         <select
@@ -99,7 +99,7 @@ const TodoApp = () => {
           placeholder="Add a todo..."
         />
         <button
-          className="bg-green-500 px-4 py-2 rounded w-full md:w-auto"
+          className="bg-purple-500 px-4 py-2 rounded w-full md:w-auto hover:bg-purple-700"
           onClick={handleAddTodo}
         >
           Add
